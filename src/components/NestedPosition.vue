@@ -7,23 +7,23 @@
       	{{ position.title }}
       	<span class="badge">{{ position.originalOrder + 1 }}</span>
   
-      	<ul v-if="hasChildren">
-			<draggable
-				tag="ul"
-				:list="children"
-				v-bind="draggableOptions"
-				@start="handleDragStart"
-				@end="handleDragEnd"
-			>
-				<NestedPosition
-					v-for="child in children"
-					:key="child.id"
-					:position="child"
-					:positions="positions"
-					:draggableOptions="draggableOptions"
-				/>
-        	</draggable>
-      	</ul>
+		<draggable
+			v-if="hasChildren"
+			tag="ul"
+			:list="children"
+			v-bind="draggableOptions"
+			@start="handleDragStart"
+			@end="handleDragEnd"
+		>
+			<NestedPosition
+				v-for="child in children"
+				:key="child.id"
+				:position="child"
+				:positions="positions"
+				:draggableOptions="draggableOptions"
+			/>
+		</draggable>
+		
     </li>
 </template>
   
