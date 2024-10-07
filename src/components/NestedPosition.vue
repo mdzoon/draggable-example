@@ -5,16 +5,15 @@
 			aria-hidden="true"
 		></i>
       	{{ position.title }}
-      	<span class="badge">{{ position.id }}</span>
+      	<span class="badge">{{ position.originalOrder + 1 }}</span>
   
       	<ul v-if="hasChildren">
 			<draggable
 				tag="ul"
 				:list="children"
 				v-bind="draggableOptions"
-				@start="isDragging = true"
+				@start="handleDragStart"
 				@end="handleDragEnd"
-				:move="onMove"
 			>
 				<NestedPosition
 					v-for="child in children"
@@ -77,15 +76,9 @@ export default {
 		},
     },
     methods: {
-		onMove({ relatedContext, draggedContext }) {
-			const relatedElement = relatedContext.element
-			const draggedElement = draggedContext.element
-
-			console.log('relatedElement: ', JSON.parse(JSON.stringify(relatedElement)))
-			console.log('draggedElement: ', JSON.parse(JSON.stringify(draggedElement)))
+		handleDragStart() {
+			this.isDragging = true
 			this.tempChildren = [...this.children]
-
-			//TODO movement logic
 		},
 		handleDragEnd(event) {
 			const reorderedChildren = [...this.children]
@@ -93,10 +86,11 @@ export default {
 				const newIndex = reorderedChildren.findIndex(child => child.id === tempChild.id)
 				if (newIndex !== index) {
 					const originalIndex = this.positions.findIndex(pos => pos.id === tempChild.id)
+					const moveDelta = newIndex - index
 
 					if (originalIndex !== -1) {
 						const [movedPosition] = this.positions.splice(originalIndex, 1)
-						this.positions.splice(newIndex, 0, movedPosition)
+						this.positions.splice(originalIndex + moveDelta, 0, movedPosition)
 					}
 				}
 			})

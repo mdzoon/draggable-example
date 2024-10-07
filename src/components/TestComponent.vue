@@ -18,7 +18,6 @@
 				tag="ul"
 				v-model="positions"
 				v-bind="draggableOptions"
-				:move="onMove"
 				@start="isDragging = true"
 				@end="isDragging = false"
 			>
@@ -54,10 +53,10 @@ export default {
 	data() {
 	  	return {
 			positions: [
+				{ id: 4, title: "Test 4", has_children: false, parent_id: null },
 				{ id: 1, title: "Test 1", has_children: false, parent_id: null },
 				{ id: 2, title: "Test 2", has_children: true, parent_id: null },
 				{ id: 3, title: "Test 3", has_children: true, parent_id: null },
-				{ id: 4, title: "Test 4", has_children: false, parent_id: null },
 				{ id: 5, title: "Test 5", has_children: false, parent_id: 2 },
 				{ id: 6, title: "Test 6", has_children: false, parent_id: 2 },
 				{ id: 7, title: "Test 7", has_children: false, parent_id: 2 },
@@ -73,11 +72,17 @@ export default {
 				{ id: 17, title: "Test 17", has_children: false, parent_id: 16 },
 				{ id: 18, title: "Test 18", has_children: false, parent_id: 17 },
 			],
+			originalOrder: [],
 			editable: true,
 			isDragging: false,
 			delayedDragging: false,
 	  	}
 	},
+	created() {
+		this.positions.forEach((position, index) => {
+			position.originalOrder = index
+		})
+	},	
 	watch: {
 		isDragging(newValue) {
 			if (newValue) {
@@ -103,19 +108,7 @@ export default {
 	},	
 	methods: {
 		orderPositions() {
-			this.positions.sort((one, two) => one.id - two.id) //TODO sortBy index
-		},
-		onMove({ relatedContext, draggedContext }) {
-			const relatedElement = relatedContext.element
-			const draggedElement = draggedContext.element
-
-			console.log('relatedElement: ', JSON.parse(JSON.stringify(relatedElement)))
-			console.log('draggedElement: ', JSON.parse(JSON.stringify(draggedElement)))
-
-			// Prevent dragging child elements under their parents //TODO exeptions
-			// const isParentToChild = draggedContext.element.parent_id === relatedContext.element.id
-
-			// return !isParentToChild; // Allow move if not parent-child relation
+			this.positions.sort((one, two) => one.originalOrder - two.originalOrder)
 		},
 		updatePositions(newPositions) {
         	this.positions = newPositions
