@@ -118,15 +118,16 @@ export default {
 </script>
 
 <style>
-.flip-list-move {
-  	transition: transform 0.5s;
+.sortable-chosen {
+	border: 1px solid rgba(52, 195, 143, 0.5) !important;
+	background-color: rgba(52, 195, 143, 0.05) !important;
 }
-.no-move {
-  	transition: transform 0s;
+.sortable-chosen * {
+	border: 1px solid rgba(52, 195, 143, 0.5) !important;
+	background-color: rgba(52, 195, 143, 0.05) !important;
 }
 .ghost {
   	opacity: 0.5;
- 	background: #c8ebfb;
 }
 .list-group {
   	min-height: 20px;
