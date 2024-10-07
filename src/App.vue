@@ -6,17 +6,17 @@
 			</h1>
 			<img style="margin-top: 3rem;" src="./assets/logo.png">
 		</div>
-    	<TestComponent />
+    	<DraggableList />
   	</div>
 </template>
 
 <script>
-import TestComponent from "./components/TestComponent";
+import DraggableList from "./components/DraggableList";
 
 export default {
   name: "app",
   components: {
-    TestComponent
+    DraggableList
   }
 };
 </script>
